@@ -1,6 +1,6 @@
 {
-  "name": "package-manager",
-  "version": "1.0.0",
+  "name": "packi",
+  "version": "0.0.1",
   "description": " test for package installer",
   "main": "index.js",
   "scripts": {

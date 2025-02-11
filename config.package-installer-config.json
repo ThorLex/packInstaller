@@ -1,3 +1,5 @@
+//  gms stand for package managment tool
 {
-  "willContribute": "true"
+  "willContribute": "true",
+  "gms": "npm"
 }
