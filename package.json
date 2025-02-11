@@ -1,10 +1,11 @@
 {
-  "name": "test",
+  "name": "package-manager",
   "version": "1.0.0",
   "description": " test for package installer",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "packi": "node index.js"
   },
   "keywords": [
     "npm",
@@ -13,7 +14,6 @@
     "easy"
   ],
   "author": "Bekono Beyas Ambroise",
-  "license": "ISC",
   "dependencies": {
     "exec": "^0.2.1",
     "fs": "^0.0.1-security",
