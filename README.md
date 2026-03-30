@@ -20,6 +20,7 @@
 | Feature | Description |
 |---|---|
 | 📋 **`requirements.txt` support** | List your packages the Python way — one per line |
+| 🧊 **`packi freeze`** | Auto-generate `requirements.txt` from `package.json` and installed packages (like `pip freeze`) |
 | 🔍 **Fuzzy search & suggestions** | Typo in a package name? `packi` finds the closest match |
 | 📊 **Progress bar** | Real-time installation progress displayed in your terminal |
 | 🗄️ **Community package database** | A local database (`exists.txt`) grows with contributions from users |
@@ -89,6 +90,8 @@ npm install packi
 
 ### 1. Create your `requirements.txt`
 
+You can create the file manually:
+
 ```
 express
 lodash
@@ -97,7 +100,19 @@ chalk
 dotenv
 ```
 
-> One package name per line. Lines starting with `#` are treated as comments.
+> One package name per line. Lines starting with `#` are treated as comments. The format `package@version` is also supported.
+
+Or use **`packi freeze`** to generate it automatically from your project:
+
+```bash
+packi freeze
+# or
+npx packi freeze
+```
+
+This scans your `package.json` and installed `node_modules` to produce a `requirements.txt` — similar to Python's `pip freeze`.
+
+> **Note:** If `requirements.txt` doesn't exist when you run `packi`, it will be auto-generated from `package.json` if available.
 
 ### 2. Run packi
 
