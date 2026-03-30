@@ -15,17 +15,17 @@
 
 ---
 
-## ✨ Features
+##  Features
 
 | Feature | Description |
 |---|---|
-| 📋 **`requirements.txt` support** | List your packages the Python way — one per line |
-| 🔍 **Fuzzy search & suggestions** | Typo in a package name? `packi` finds the closest match |
-| 📊 **Progress bar** | Real-time installation progress displayed in your terminal |
-| 🗄️ **Community package database** | A local database (`exists.txt`) grows with contributions from users |
-| ⚙️ **Persistent config** | One-time contribution preference saved in `.package-installer-config.json` |
-| 🔁 **Alternative installer** | When a package fails, choose an alternative from suggestions interactively |
-| 🧩 **Zero native deps** | Only one runtime dependency: `string-similarity` |
+|  **`requirements.txt` support** | List your packages the Python way — one per line |
+|  **Fuzzy search & suggestions** | Typo in a package name? `packi` finds the closest match |
+|  **Progress bar** | Real-time installation progress displayed in your terminal |
+|  **Community package database** | A local database (`exists.txt`) grows with contributions from users |
+|  **Persistent config** | One-time contribution preference saved in `.package-installer-config.json` |
+|  **Alternative installer** | When a package fails, choose an alternative from suggestions interactively |
+|  **Zero native deps** | Only one runtime dependency: `string-similarity` |
 
 ---
 
@@ -58,7 +58,7 @@ flowchart TD
     S --> N
     N --> T{More packages?}
     T -- Yes --> G
-    T -- No --> U[📊 Show summary report]
+    T -- No --> U[ Show summary report]
 ```
 
 ---
