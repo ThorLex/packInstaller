@@ -706,12 +706,14 @@ async function freeze() {
   }
 
   // Générer le contenu du requirements.txt
+  const sortedEntries = [...packageMap.entries()].sort((a, b) =>
+    a[0].localeCompare(b[0])
+  );
+
   const lines = [];
   lines.push("# Généré automatiquement par packi freeze");
   lines.push(`# Date: ${new Date().toISOString()}`);
-  for (const [name, version] of [...packageMap.entries()].sort((a, b) =>
-    a[0].localeCompare(b[0])
-  )) {
+  for (const [name, version] of sortedEntries) {
     if (version) {
       lines.push(`${name}@${version}`);
     } else {
@@ -734,9 +736,7 @@ async function freeze() {
 
   console.log("\nContenu de requirements.txt :");
   console.log("─".repeat(40));
-  for (const [name, version] of [...packageMap.entries()].sort((a, b) =>
-    a[0].localeCompare(b[0])
-  )) {
+  for (const [name, version] of sortedEntries) {
     if (version) {
       console.log(`  ${name}@${version}`);
     } else {
@@ -820,7 +820,8 @@ async function main() {
     .split("\n")
     .map((line) => line.trim())
     // Supporter le format name@version en extrayant juste le nom
-    .map((line) => line.replace(/@[\d^~>=<.*]+$/, ""))
+    // Le pattern gère les scoped packages (@scope/name@version)
+    .map((line) => line.replace(/@[~^>=<]*\d[^\s]*$/, ""))
     .filter((line) => line && !line.startsWith("#"));
 
   if (packages.length === 0) {
