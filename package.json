@@ -1,24 +1,54 @@
 {
   "name": "packi",
-  "version": "0.0.1",
-  "description": " test for package installer",
+  "version": "1.0.0",
+  "description": "Smart CLI package installer for Node.js — reads requirements.txt, installs npm packages with fuzzy-match suggestions, progress tracking, and a community-powered package database.",
   "main": "index.js",
+  "bin": {
+    "packi": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "packi": "node index.js"
+    "start": "node index.js"
   },
   "keywords": [
     "npm",
-    "js",
-    "install",
-    "easy"
+    "installer",
+    "package-manager",
+    "cli",
+    "requirements",
+    "fuzzy-search",
+    "automation",
+    "devtools",
+    "easy-install"
   ],
-  "author": "Bekono Beyas Ambroise",
+  "author": {
+    "name": "Bekono Beyas Ambroise (ThorLex)",
+    "email": "b.galaxy.dev@gmail.com",
+    "url": "https://github.com/ThorLex"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ThorLex/packInstaller#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ThorLex/packInstaller.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ThorLex/packInstaller/issues",
+    "email": "b.galaxy.dev@gmail.com"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "index.js",
+    "exists.txt",
+    "README.md",
+    "LICENSE"
+  ],
   "dependencies": {
-    "exec": "^0.2.1",
-    "fs": "^0.0.1-security",
-    "nodemon": "^3.1.9",
-    "path": "^0.12.7",
     "string-similarity": "^4.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
   }
 }

@@ -1,0 +1,9 @@
+# Exclude development and test files from the published npm package
+node_modules/
+.git/
+.gitignore
+requirements.txt
+readme.txt
+.package-installer-config.json
+*.log
+.DS_Store
