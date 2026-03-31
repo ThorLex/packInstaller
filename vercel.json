@@ -1,6 +1,6 @@
 {
-  "buildCommand": "pip install mkdocs mkdocs-material && mkdocs build",
+  "buildCommand": "uv pip install --system mkdocs mkdocs-material && mkdocs build",
   "outputDirectory": "site",
-  "installCommand": "pip install mkdocs mkdocs-material",
+  "installCommand": "uv pip install --system mkdocs mkdocs-material",
   "framework": null
 }
