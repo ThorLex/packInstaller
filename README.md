@@ -1,250 +1,166 @@
-<div align="center">
+﻿# packi
 
-#  packi
+packi est un CLI Node.js qui automatise l'installation des dependances depuis un fichier requirements.txt, avec un objectif clair : reduire les echecs d'installation et garder un flux de travail robuste, meme quand la connexion reseau est instable.
 
-**Smart CLI package installer for Node.js**
+Package npm officiel : https://www.npmjs.com/package/@beyas/packi
 
-[![npm version](https://img.shields.io/npm/v/packi?color=brightgreen&logo=npm)](https://www.npmjs.com/package/packi)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
-[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D14-green?logo=node.js)](https://nodejs.org)
-[![GitHub](https://img.shields.io/badge/GitHub-ThorLex%2FpackInstaller-black?logo=github)](https://github.com/ThorLex/packInstaller)
+## Pourquoi packi
 
-> Install all your npm dependencies from a `requirements.txt` in one command — with fuzzy-match suggestions, progress tracking, and a community-powered package database.
+Dans de nombreux projets, l'installation des dependances echoue pour des raisons reseau : timeout, coupure intermittente, perte temporaire de DNS, ou registre npm lent.
 
-</div>
+packi apporte une approche operationnelle :
+- installation en lot a partir d'un fichier simple
+- poursuite du traitement package par package
+- detection des erreurs de nom de package
+- suggestions automatiques pour corriger rapidement les fautes
+- resume final exploitable en local et en CI
 
----
-
-##  Features
-
-| Feature | Description |
-|---|---|
-|  **`requirements.txt` support** | List your packages the Python way — one per line |
-|  **Fuzzy search & suggestions** | Typo in a package name? `packi` finds the closest match |
-|  **Progress bar** | Real-time installation progress displayed in your terminal |
-|  **Community package database** | A local database (`exists.txt`) grows with contributions from users |
-|  **Persistent config** | One-time contribution preference saved in `.package-installer-config.json` |
-|  **Alternative installer** | When a package fails, choose an alternative from suggestions interactively |
-|  **Zero native deps** | Only one runtime dependency: `string-similarity` |
-
----
-
-##  How it works
+## Vue d'ensemble
 
 ```mermaid
 flowchart TD
-    A[🖥️ Run: npx packi] --> B[📂 Read requirements.txt]
-    B --> C{File exists?}
-    C -- No --> D[❌ Show creation instructions]
-    C -- Yes --> E[📖 Parse package list]
-    E --> F[🗄️ Load package database\nexists.txt]
-    F --> G[🔄 For each package...]
-    G --> H[⬇️ npm install package]
-    H --> I{Install OK?}
-    I -- Yes --> J[✅ Verify installation]
-    J --> K{In database?}
-    K -- No --> L{User contributes?}
-    L -- Yes --> M[➕ Add to exists.txt]
-    L -- No --> N[⏭️ Next package]
-    M --> N
-    K -- Yes --> N
-    I -- No --> O[🔍 Fuzzy search similar packages]
-    O --> P{Similar found?}
-    P -- Yes --> Q[💡 Show suggestions]
-    Q --> R{User selects one?}
-    R -- Yes --> H
-    R -- No --> S[❌ Skip — log failure]
-    P -- No --> S
-    S --> N
-    N --> T{More packages?}
-    T -- Yes --> G
-    T -- No --> U[ Show summary report]
+    A[requirements.txt] --> B[packi]
+    B --> C[Lecture et normalisation des lignes]
+    C --> D[Installation npm package par package]
+    D --> E{Succes ?}
+    E -- Oui --> F[Suivant]
+    E -- Non --> G[Recherche de packages similaires]
+    G --> H{Alternative choisie ?}
+    H -- Oui --> D
+    H -- Non --> I[Marquer echec et continuer]
+    F --> J{Fin de liste ?}
+    I --> J
+    J -- Non --> D
+    J -- Oui --> K[Resume final]
 ```
 
----
+## Installation
 
-##  Installation
-
-### Use without installing (recommended for one-time use)
+### Sans installation globale
 
 ```bash
-npx packi
+npx @beyas/packi
 ```
 
-### Install globally
+### Installation globale
 
 ```bash
-npm install -g packi
+npm install -g @beyas/packi
+packi
 ```
 
-### Install locally in a project
+### Installation locale au projet
 
 ```bash
-npm install packi
+npm install --save-dev @beyas/packi
+npx @beyas/packi
 ```
 
----
+## Commandes CLI
 
-##  Usage
-
-### 1. Create your `requirements.txt`
-
-You can create the file manually:
-
-```
-express
-lodash
-axios
-chalk
-dotenv
-```
-
-> One package name per line. Lines starting with `#` are treated as comments. The format `package@version` is also supported.
-
-Or use **`packi freeze`** to generate it automatically from your project:
-
-```bash
-packi freeze
-# or
-npx packi freeze
-```
-
-This scans your `package.json` and installed `node_modules` to produce a `requirements.txt` — similar to Python's `pip freeze`.
-
-> **Note:** If `requirements.txt` doesn't exist when you run `packi`, it will be auto-generated from `package.json` if available.
-
-### 2. Run packi
+### Commande principale
 
 ```bash
 packi
-# or
-npx packi
+# ou
+npx @beyas/packi
 ```
 
-### 3. Watch the magic 
+Ce que fait la commande :
+1. Lit requirements.txt dans le dossier courant.
+2. Si le fichier est absent, tente une generation depuis package.json.
+3. Charge exists.txt pour les suggestions.
+4. Lance npm install package par package.
+5. Continue meme si certains packages echouent.
+6. Affiche un bilan final.
 
-```
-=== Début de l'installation ===
-Nombre total de packages à installer: 3
+### Generation du fichier requirements.txt
 
-[14:22:01] 📍 Chargement de la base de données des packages
-
-   Tentative d'installation de express
-  express installé avec succès
-
-[████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 33.3%
-
-   Tentative d'installation de lodash
-  lodash installé avec succès
-
-[████████████████████████░░░░░░░░░░░░░░░░] 66.7%
-
-...
-
-=== Résumé de l'installation ===
-  Durée totale: 8.42 secondes
- Packages installés avec succès: 3
- Échecs d'installation: 0
+```bash
+packi freeze
+# ou
+npx @beyas/packi freeze
 ```
 
----
+Cette commande genere ou met a jour requirements.txt en se basant sur les dependances detectees dans le projet.
 
-##  Configuration
+## Strategie recommandee en reseau instable
 
-packi creates a `.package-installer-config.json` in your working directory to remember your contribution preference:
+packi gere deja la continuite du traitement package par package. Pour durcir encore votre pipeline, combinez-le avec une configuration npm orientee reseau.
 
-```json
-{
-  "willContribute": true,
-  "gms": "npm"
-}
+### Parametres npm conseilles
+
+```bash
+npm config set fetch-retries 5
+npm config set fetch-retry-factor 2
+npm config set fetch-retry-mintimeout 20000
+npm config set fetch-retry-maxtimeout 120000
+npm config set network-timeout 300000
 ```
 
-| Key | Type | Description |
-|---|---|---|
-| `willContribute` | `boolean` | Whether to add newly installed packages to the shared database |
-| `gms` | `string` | Package manager to use (currently `npm`) |
+### Execution robuste
 
----
-
-##  Why use packi?
-
-### One command to install everything
-
-No more copy-pasting package names one by one. List them all in `requirements.txt` and let packi handle the rest.
-
-###  Fuzzy matching saves you from typos
-
-Made a mistake?
-
-```
-axois   # typo!
+```bash
+npx @beyas/packi || npx @beyas/packi
 ```
 
-packi detects the error and suggests:
+Le second passage termine souvent les packages qui ont echoue lors de la premiere tentative reseau.
 
+## Format requirements.txt
+
+```text
+# framework
+express
+
+# utilitaires
+lodash
+chalk
+
+# version fixe
+axios@1.7.9
 ```
-  Échec de l'installation de axois
-  Suggestions de packages similaires:
-   1. axios (2,500,000 téléchargements) - Similarité: 83.3%
-   2. axos  (12,000 téléchargements)   - Similarité: 57.1%
-```
 
-###  Community-powered package database
+Regles :
+- un package par ligne
+- lignes vides ignorees
+- lignes commencant par # ignorees
+- notation package@version acceptee
 
-Every time you install a new package, you can add it to the local database. Over time, the suggestion engine gets smarter for your whole team.
+## Architecture du projet
 
-###  Full visibility
-
-See exactly what's happening at every step, with timestamps, progress bars, and a final summary.
-
----
-
-##  Project structure
-
-```
+```text
 packInstaller/
-├── index.js                         #  Main CLI entry point
-├── exists.txt                       #  Community package database
-├── requirements.txt                 #  Your packages to install (user-created)
-├── .package-installer-config.json  #  Persistent user config (auto-generated)
-├── package.json                     #  npm module metadata
-└── README.md                        #  This file
+├── cli.js
+├── exists.txt
+├── requirements.txt
+├── src/
+│   ├── classes/
+│   │   ├── ConfigManager.js
+│   │   ├── InstallationLogger.js
+│   │   └── PackageDatabase.js
+│   ├── commands/
+│   │   ├── freeze.js
+│   │   └── install.js
+│   └── utils/
+│       ├── cli-helpers.js
+│       └── npm-commands.js
+└── docs/
 ```
 
----
+## Cas d'usage CI
 
-##  Contributing
+```bash
+npx @beyas/packi
+```
 
-Contributions are welcome! Here's how:
+Puis interpretation du code de sortie dans votre pipeline.
 
-1. **Fork** the repository
-2. **Create** a feature branch: `git checkout -b feat/my-feature`
-3. **Commit** your changes: `git commit -m "feat: add my feature"`
-4. **Push**: `git push origin feat/my-feature`
-5. **Open a Pull Request** on GitHub
+## Liens
 
----
+- npm : https://www.npmjs.com/package/@beyas/packi
+- GitHub : https://github.com/ThorLex/packInstaller
+- Issues : https://github.com/ThorLex/packInstaller/issues
 
-##  Contact
+## Licence
 
-| Channel | Link |
-|---|---|
-|  **Email** | [b.galaxy.dev@gmail.com](mailto:b.galaxy.dev@gmail.com) |
-|  **GitHub** | [github.com/ThorLex](https://github.com/ThorLex) |
-|  **Issues** | [github.com/ThorLex/packInstaller/issues](https://github.com/ThorLex/packInstaller/issues) |
-|  **npm** | [npmjs.com/package/packi](https://www.npmjs.com/package/packi) |
-
----
-
-##  License
-
-MIT © [Bekono Beyas Ambroise (ThorLex)](https://github.com/ThorLex)
-
----
-
-<div align="center">
-
-Made with ❤️ by <a href="https://github.com/ThorLex">ThorLex</a> · <a href="mailto:b.galaxy.dev@gmail.com">b.galaxy.dev@gmail.com</a>
-
-</div>
+MIT

@@ -1,22 +1,13 @@
-# ─────────────────────────────────────────
-#  INFORMATIONS DU SITE
-# ─────────────────────────────────────────
-site_name: packi (Package Installer)
-site_description: "Smart CLI package installer pour Node.js - Installez toutes vos dependances npm en une seule commande"
+﻿site_name: packi (Package Installer)
+site_description: "CLI resilient pour Node.js : installation en lot depuis requirements.txt avec meilleure tolerance aux incidents reseau"
 site_author: Bekono Beyas Ambroise (ThorLex)
 copyright: "Copyright 2024 Bekono Beyas Ambroise (ThorLex)"
 site_url: https://pack-installer.ambbeyas.com/
 
-# ─────────────────────────────────────────
-#  DEPOT GIT
-# ─────────────────────────────────────────
 repo_url: https://github.com/ThorLex/packInstaller
 repo_name: ThorLex/packInstaller
 edit_uri: edit/main/docs/
 
-# ─────────────────────────────────────────
-#  THEME
-# ─────────────────────────────────────────
 theme:
   name: material
   language: fr
@@ -41,24 +32,15 @@ theme:
     - search.highlight
     - content.code.copy
 
-# ─────────────────────────────────────────
-#  DOSSIERS
-# ─────────────────────────────────────────
 docs_dir: docs
 site_dir: site
 
-# ─────────────────────────────────────────
-#  FICHIERS STATIQUES
-# ─────────────────────────────────────────
 extra_css:
   - css/extra.css
 
 extra_javascript:
   - js/extra.js
 
-# ─────────────────────────────────────────
-#  EXTENSIONS MARKDOWN
-# ─────────────────────────────────────────
 markdown_extensions:
   - abbr
   - admonition
@@ -74,25 +56,44 @@ markdown_extensions:
       toc_depth: 2
       title: Sur cette page
       separator: "-"
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
 
-# ─────────────────────────────────────────
-#  PLUGINS
-# ─────────────────────────────────────────
 plugins:
   - search:
       lang: fr
-      separator: '[\s\-\.]+'
+      separator: '[\\s\\-\\.]+'
 
-# ─────────────────────────────────────────
-#  EXTRA
-# ─────────────────────────────────────────
+nav:
+  - Accueil: index.md
+  - Prise en main:
+      - Installation: home/index.md
+      - A propos: home/about.md
+      - Fonctionnement interne: home/fonctionnement.md
+      - Contribuer: home/contribuer.md
+  - Utilisation:
+      - Vue d'ensemble: utilisation/index.md
+      - Commandes: utilisation/commandes.md
+      - Freeze: utilisation/freeze.md
+      - requirements.txt: utilisation/requirements.md
+  - Reference:
+      - Configuration: reference/configuration.md
+      - Base locale exists.txt: reference/database.md
+
 extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/ThorLex
       name: ThorLex sur GitHub
     - icon: fontawesome/brands/npm
-      link: https://www.npmjs.com/package/packi
+      link: https://www.npmjs.com/package/@beyas/packi
       name: packi sur npm
     - icon: fontawesome/solid/envelope
       link: mailto:b.galaxy.dev@gmail.com

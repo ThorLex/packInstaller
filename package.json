@@ -1,14 +1,22 @@
 {
-  "name": "packi",
-  "version": "1.0.0",
+  "name": "@beyas/packi",
+  "version": "1.1.2",
+  "type": "module",
   "description": "Smart CLI package installer for Node.js — reads requirements.txt, installs npm packages with fuzzy-match suggestions, progress tracking, and a community-powered package database.",
-  "main": "index.js",
+  "main": "cli.js",
+  "exports": {
+    ".": {
+      "import": "./cli.js",
+      "types": "./types/index.d.ts"
+    }
+  },
   "bin": {
-    "packi": "./index.js"
+    "packi": "./cli.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "test": "node -e \"console.log('No tests configured')\"",
+    "start": "node cli.js",
+    "prepublishOnly": "npm test"
   },
   "keywords": [
     "npm",
@@ -40,15 +48,17 @@
     "node": ">=14.0.0"
   },
   "files": [
-    "index.js",
+    "cli.js",
+    "src/",
     "exists.txt",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "types/"
   ],
   "dependencies": {
     "string-similarity": "^4.0.4"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.14"
   }
 }

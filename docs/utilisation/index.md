@@ -1,96 +1,38 @@
-# Utilisation — Vue d'ensemble
+﻿# Utilisation
 
-Cette section couvre tout ce dont vous avez besoin pour utiliser `packi` au quotidien, de la creation du fichier `requirements.txt` a l'execution des commandes avancees.
+Cette section couvre l'usage de packi en local, en equipe et en CI.
 
----
+## Workflow standard
 
-## Flux de travail typique
+1. Generer ou maintenir requirements.txt.
+2. Lancer packi pour installer le lot.
+3. Relancer une seconde fois si la connexion a ete instable.
+4. Analyser le resume final et corriger les echecs restants.
 
-Le flux d'utilisation standard de `packi` se deroule en trois etapes :
+## Schema d'exploitation
 
 ```mermaid
 flowchart LR
-    A[Creer requirements.txt] --> B[Lancer packi]
-    B --> C[Voir le rapport]
+    A[requirements.txt] --> B[packi]
+    B --> C[Resume final]
+    C --> D{Echecs ?}
+    D -- Non --> E[Termine]
+    D -- Oui --> F[Corriger noms ou relancer]
+    F --> B
 ```
 
-1. **Creez** votre `requirements.txt` avec la liste de vos packages
-2. **Lancez** `packi` (ou `npx packi`)
-3. **Consultez** le rapport de fin d'installation
+## Profil connexion instable
 
----
-
-## Commande de base
+Commande recommandee :
 
 ```bash
-packi
+npx @beyas/packi || npx @beyas/packi
 ```
 
-ou via `npx` sans installation prealable :
+Cette approche permet de finaliser les packages qui ont echoue de maniere transitoire.
 
-```bash
-npx packi
-```
+## Pages associees
 
-### Ce que fait `packi` au lancement
-
-Quand vous lancez `packi`, il effectue les operations suivantes dans l'ordre :
-
-1. Recherche le fichier `requirements.txt` dans le repertoire courant
-2. Si absent, tente de le generer depuis votre `package.json`
-3. Charge la base de donnees locale (`exists.txt`)
-4. Installe chaque package via `npm install`
-5. En cas d'echec, propose des alternatives par recherche fuzzy
-6. Vous invite a contribuer les nouveaux packages a la base de donnees
-7. Affiche un rapport de synthese
-
----
-
-## Exemple de session complete
-
-Voici ce qu'affiche `packi` lors d'une installation typique :
-
-```
-=== Debut de l'installation ===
-Nombre total de packages a installer: 4
-
-[14:22:01] Chargement de la base de donnees des packages
-
-   Tentative d'installation de express
-  express installe avec succes
-[██████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 25%
-
-   Tentative d'installation de axois
-  Echec de l'installation de axois
-
-  Suggestions de packages similaires:
-   1. axios (2,500,000 telechargements) - Similarite: 83.3%
-   2. axos  (12,000 telechargements)   - Similarite: 57.1%
-
-  Voulez-vous installer axios a la place ? (o/n): o
-  axios installe avec succes
-[████████████████████░░░░░░░░░░░░░░░░░░░░] 50%
-
-   Tentative d'installation de lodash
-  lodash installe avec succes
-[██████████████████████████████░░░░░░░░░░] 75%
-
-   Tentative d'installation de dotenv
-  dotenv installe avec succes
-[████████████████████████████████████████] 100%
-
-=== Resume de l'installation ===
-  Duree totale: 12.37 secondes
-  Packages installes avec succes: 4
-  Echecs d'installation: 0
-```
-
----
-
-## Pages detaillees
-
-Consultez les sous-pages pour aller plus loin :
-
-- [**Fichier requirements.txt**](requirements.md) — Syntaxe, format, exemples
-- [**Commandes disponibles**](commandes.md) — Reference de toutes les commandes
-- [**Commande freeze**](freeze.md) — Generer `requirements.txt` depuis votre projet
+- [Commandes CLI](commandes.md)
+- [Commande freeze](freeze.md)
+- [Format requirements.txt](requirements.md)

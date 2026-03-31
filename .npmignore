@@ -1,9 +1,37 @@
-# Exclude development and test files from the published npm package
+# Development
+npm-debug.log*
+.npm
+.eslintrc*
+.prettierrc*
+.editorconfig
+*.spec.js
+*.test.js
+
+# Dependencies
 node_modules/
-.git/
-.gitignore
-requirements.txt
-readme.txt
-.package-installer-config.json
-*.log
+package-lock.json
+yarn.lock
+
+# Docs
+docs/
+mkdocs.yml
+.github/
+
+# Build/tools
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 .DS_Store
+
+# Project files
+config.package-installer-config.json
+exists.txt
+requirements.txt
+.package-installer-config.json
+
+# Root files
+readme.txt
+.gitignore
+.git

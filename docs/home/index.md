@@ -1,125 +1,65 @@
-# Installation
+﻿# Installation et prise en main
 
-Cette page explique les differentes facons d'installer et d'utiliser `packi` selon votre cas d'usage.
-
----
+Cette page explique comment installer et executer @beyas/packi en local, en global et en CI.
 
 ## Prerequis
 
-!!! warning "Verifiez votre version de Node.js"
+- Node.js >= 14
+- npm disponible dans le PATH
 
-    `packi` necessite **Node.js >= 14**. Verifiez votre version avant de continuer :
+Verification :
 
 ```bash
 node --version
-# v14.0.0 ou superieur requis
+npm --version
 ```
 
-## Telechargez la derniere version LTS sur [nodejs.org](https://nodejs.org) si necessaire.
-
-## Methode 1 — Utilisation sans installation (recommandee)
-
-La facon la plus simple d'utiliser `packi` sans l'ajouter a votre systeme :
+## Methode 1 : execution directe sans installation
 
 ```bash
-npx packi
+npx @beyas/packi
 ```
 
-!!! info "Quand utiliser `npx` ?" - Pour un usage ponctuel sur un projet - Quand vous ne voulez pas installer d'outils globaux - Pour toujours utiliser la derniere version sans mise a jour manuelle
+Quand utiliser cette methode :
+- essais ponctuels
+- pipeline CI simple
+- poste de travail sans installation globale
 
----
-
-## Methode 2 — Installation globale
-
-Installez `packi` une fois pour l'utiliser dans n'importe quel projet :
+## Methode 2 : installation globale
 
 ```bash
-npm install -g packi
-```
-
-Verifiez ensuite que l'installation a reussi :
-
-```bash
-packi --version
-```
-
-!!! tip "Avantage de l'installation globale"
-    Vous pouvez simplement taper `packi` dans n'importe quel repertoire sans passer par `npx`.
-
----
-
-## Methode 3 — Installation locale dans un projet
-
-Ajoutez `packi` comme dependance de developpement dans votre projet :
-
-```bash
-npm install packi
-```
-
-Ou comme dependance de developpement uniquement :
-
-```bash
-npm install --save-dev packi
-```
-
-Puis appelez-le via npm scripts dans votre `package.json` :
-
-```json
-{
-  "scripts": {
-    "install-deps": "packi"
-  }
-}
-```
-
-```bash
-npm run install-deps
-```
-
----
-
-## Comparaison des methodes
-
-| Methode | Commande               | Persistant | Recommande pour        |
-| ------- | ---------------------- | ---------- | ---------------------- |
-| `npx`   | `npx packi`            | Non        | Usage ponctuel, CI/CD  |
-| Global  | `npm install -g packi` | Oui        | Developpeurs frequents |
-| Local   | `npm install packi`    | Oui        | Projets en equipe      |
-
----
-
-## Verification de l'installation
-
-Apres installation, verifiez que tout fonctionne en creant un petit `requirements.txt` de test :
-
-```text
-chalk
-```
-
-Puis lancez :
-
-```bash
+npm install -g @beyas/packi
 packi
-# ou
-npx packi
 ```
 
-Vous devriez voir :
+Quand utiliser cette methode :
+- usage quotidien
+- scripts shell locaux
 
-```
-=== Debut de l'installation ===
-Nombre total de packages a installer: 1
+## Methode 3 : installation locale projet
 
-  Tentative d'installation de chalk
-  chalk installe avec succes
-
-[████████████████████████████████████████] 100%
-
-=== Resume de l'installation ===
-  Duree totale: 2.14 secondes
-  Packages installes avec succes: 1
-  Echecs d'installation: 0
+```bash
+npm install --save-dev @beyas/packi
+npx @beyas/packi
 ```
 
-!!! success "Tout est pret !"
-    Consultez maintenant la section [Utilisation](utilisation/index.md) pour apprendre a creer et gerer vos `requirements.txt`.
+Quand utiliser cette methode :
+- aligner la version de l'outil par projet
+- standardiser l'environnement d'equipe
+
+## Verification fonctionnelle
+
+```bash
+npx @beyas/packi freeze
+npx @beyas/packi
+```
+
+## Flux de prise en main
+
+```mermaid
+flowchart TD
+    A[Installer packi] --> B[Generer requirements.txt]
+    B --> C[Verifier le contenu]
+    C --> D[Lancer packi]
+    D --> E[Analyser le resume final]
+```

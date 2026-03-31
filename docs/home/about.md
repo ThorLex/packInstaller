@@ -1,64 +1,53 @@
-# A propos de packi
+﻿# A propos de packi
 
-## Le projet
+packi est ne d'un probleme concret : les installations npm qui cassent en environnement reseau imparfait.
 
-**packi** est un outil CLI open-source pour Node.js, concu pour simplifier l'installation de dependances npm en s'inspirant du workflow Python (`pip install -r requirements.txt`).
+## Vision
 
-Le projet est maintenu par **Bekono Beyas Ambroise**, alias **ThorLex**, developpeur passione base au Cameroun.
+Offrir une commande unique pour installer un ensemble de dependances de maniere plus resiliente et plus lisible qu'une succession manuelle de npm install.
 
----
+## Objectifs du projet
 
-## Philosophie
+1. Rendre l'installation par lot simple avec requirements.txt.
+2. Limiter l'impact des echecs reseau ponctuels.
+3. Accelerer la correction des erreurs de nom de package.
+4. Conserver un resultat exploitable en CI/CD.
 
-L'idee derriere `packi` est simple :
+## Ce que packi fait aujourd'hui
 
-> *Pourquoi installer ses dependances une par une alors qu'on peut tout definir dans un fichier et lancer une seule commande ?*
+- orchestrer l'installation package par package
+- continuer le traitement meme apres certains echecs
+- suggerer des alternatives via similarite
+- fournir un resume final clair
 
-Le monde Python a `pip` et `requirements.txt`. Node.js a `package.json`, mais celui-ci est souvent trop verbeux pour une simple liste de packages. `packi` comble cet ecart avec une approche minimaliste et accessible a tous.
+## Ce que packi peut evoluer demain
 
----
+- politique de retry integree par package
+- support multi gestionnaire (npm, pnpm, yarn)
+- mode non interactif avance pour CI
+- rapports structurés JSON
 
-## Liens utiles
+## Carte conceptuelle
 
-| Canal      | Lien                                                                                        |
-| ---------- | ------------------------------------------------------------------------------------------- |
-| **npm**    | [npmjs.com/package/packi](https://www.npmjs.com/package/packi)                              |
-| **GitHub** | [github.com/ThorLex/packInstaller](https://github.com/ThorLex/packInstaller)                |
-| **Issues** | [github.com/ThorLex/packInstaller/issues](https://github.com/ThorLex/packInstaller/issues)  |
-| **Email**  | [b.galaxy.dev@gmail.com](mailto:b.galaxy.dev@gmail.com)                                     |
-
----
-
-## Licence
-
-`packi` est distribue sous licence **MIT**.
-
-```
-MIT License
-
-Copyright (c) Bekono Beyas Ambroise (ThorLex)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+```mermaid
+mindmap
+  root((packi))
+    fiabilite
+      reseau instable
+      echecs partiels toleres
+      reprise simple
+    ergonomie
+      requirements.txt
+      commandes courtes
+      feedback clair
+    qualite
+      suggestions fuzzy
+      base locale exists.txt
+      configuration persistante
 ```
 
-Consultez le fichier [LICENSE](https://github.com/ThorLex/packInstaller/blob/main/LICENSE) pour le texte complet.
+## Liens
 
----
-
-## Remerciements
-
-Merci a tous ceux qui utilisent, testent et contribuent a `packi`. Chaque retour compte.
-
----
-
-<div align="center">
-Fait avec coeur par <strong>ThorLex</strong> · <a href="mailto:b.galaxy.dev@gmail.com">b.galaxy.dev@gmail.com</a>
-</div>
+- npm : https://www.npmjs.com/package/@beyas/packi
+- GitHub : https://github.com/ThorLex/packInstaller
+- Issues : https://github.com/ThorLex/packInstaller/issues
