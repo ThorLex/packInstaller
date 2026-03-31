@@ -1,6 +1,6 @@
 <div align="center">
 
-# 📦 packi
+#  packi
 
 **Smart CLI package installer for Node.js**
 
@@ -15,22 +15,21 @@
 
 ---
 
-## ✨ Features
+##  Features
 
 | Feature | Description |
 |---|---|
-| 📋 **`requirements.txt` support** | List your packages the Python way — one per line |
-| 🧊 **`packi freeze`** | Auto-generate `requirements.txt` from `package.json` and installed packages (like `pip freeze`) |
-| 🔍 **Fuzzy search & suggestions** | Typo in a package name? `packi` finds the closest match |
-| 📊 **Progress bar** | Real-time installation progress displayed in your terminal |
-| 🗄️ **Community package database** | A local database (`exists.txt`) grows with contributions from users |
-| ⚙️ **Persistent config** | One-time contribution preference saved in `.package-installer-config.json` |
-| 🔁 **Alternative installer** | When a package fails, choose an alternative from suggestions interactively |
-| 🧩 **Zero native deps** | Only one runtime dependency: `string-similarity` |
+|  **`requirements.txt` support** | List your packages the Python way — one per line |
+|  **Fuzzy search & suggestions** | Typo in a package name? `packi` finds the closest match |
+|  **Progress bar** | Real-time installation progress displayed in your terminal |
+|  **Community package database** | A local database (`exists.txt`) grows with contributions from users |
+|  **Persistent config** | One-time contribution preference saved in `.package-installer-config.json` |
+|  **Alternative installer** | When a package fails, choose an alternative from suggestions interactively |
+|  **Zero native deps** | Only one runtime dependency: `string-similarity` |
 
 ---
 
-## 🚀 How it works
+##  How it works
 
 ```mermaid
 flowchart TD
@@ -59,12 +58,12 @@ flowchart TD
     S --> N
     N --> T{More packages?}
     T -- Yes --> G
-    T -- No --> U[📊 Show summary report]
+    T -- No --> U[ Show summary report]
 ```
 
 ---
 
-## 📥 Installation
+##  Installation
 
 ### Use without installing (recommended for one-time use)
 
@@ -86,7 +85,7 @@ npm install packi
 
 ---
 
-## 🛠️ Usage
+##  Usage
 
 ### 1. Create your `requirements.txt`
 
@@ -122,7 +121,7 @@ packi
 npx packi
 ```
 
-### 3. Watch the magic ✨
+### 3. Watch the magic 
 
 ```
 === Début de l'installation ===
@@ -130,27 +129,27 @@ Nombre total de packages à installer: 3
 
 [14:22:01] 📍 Chargement de la base de données des packages
 
- ℹ️  Tentative d'installation de express
- ✅ express installé avec succès
+   Tentative d'installation de express
+  express installé avec succès
 
 [████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░] 33.3%
 
- ℹ️  Tentative d'installation de lodash
- ✅ lodash installé avec succès
+   Tentative d'installation de lodash
+  lodash installé avec succès
 
 [████████████████████████░░░░░░░░░░░░░░░░] 66.7%
 
 ...
 
 === Résumé de l'installation ===
-⏱️  Durée totale: 8.42 secondes
-✅ Packages installés avec succès: 3
-❌ Échecs d'installation: 0
+  Durée totale: 8.42 secondes
+ Packages installés avec succès: 3
+ Échecs d'installation: 0
 ```
 
 ---
 
-## ⚙️ Configuration
+##  Configuration
 
 packi creates a `.package-installer-config.json` in your working directory to remember your contribution preference:
 
@@ -168,13 +167,13 @@ packi creates a `.package-installer-config.json` in your working directory to re
 
 ---
 
-## 🎯 Why use packi?
+##  Why use packi?
 
-### ⚡ One command to install everything
+### One command to install everything
 
 No more copy-pasting package names one by one. List them all in `requirements.txt` and let packi handle the rest.
 
-### 🧠 Fuzzy matching saves you from typos
+###  Fuzzy matching saves you from typos
 
 Made a mistake?
 
@@ -185,37 +184,37 @@ axois   # typo!
 packi detects the error and suggests:
 
 ```
- ❌ Échec de l'installation de axois
- 💡 Suggestions de packages similaires:
+  Échec de l'installation de axois
+  Suggestions de packages similaires:
    1. axios (2,500,000 téléchargements) - Similarité: 83.3%
    2. axos  (12,000 téléchargements)   - Similarité: 57.1%
 ```
 
-### 🌍 Community-powered package database
+###  Community-powered package database
 
 Every time you install a new package, you can add it to the local database. Over time, the suggestion engine gets smarter for your whole team.
 
-### 📊 Full visibility
+###  Full visibility
 
 See exactly what's happening at every step, with timestamps, progress bars, and a final summary.
 
 ---
 
-## 📁 Project structure
+##  Project structure
 
 ```
 packInstaller/
-├── index.js                         # 🚀 Main CLI entry point
-├── exists.txt                       # 🗄️ Community package database
-├── requirements.txt                 # 📋 Your packages to install (user-created)
-├── .package-installer-config.json  # ⚙️ Persistent user config (auto-generated)
-├── package.json                     # 📦 npm module metadata
-└── README.md                        # 📖 This file
+├── index.js                         #  Main CLI entry point
+├── exists.txt                       #  Community package database
+├── requirements.txt                 #  Your packages to install (user-created)
+├── .package-installer-config.json  #  Persistent user config (auto-generated)
+├── package.json                     #  npm module metadata
+└── README.md                        #  This file
 ```
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions are welcome! Here's how:
 
@@ -227,18 +226,18 @@ Contributions are welcome! Here's how:
 
 ---
 
-## 📬 Contact
+##  Contact
 
 | Channel | Link |
 |---|---|
-| 📧 **Email** | [b.galaxy.dev@gmail.com](mailto:b.galaxy.dev@gmail.com) |
-| 🐙 **GitHub** | [github.com/ThorLex](https://github.com/ThorLex) |
-| 🐛 **Issues** | [github.com/ThorLex/packInstaller/issues](https://github.com/ThorLex/packInstaller/issues) |
-| 📦 **npm** | [npmjs.com/package/packi](https://www.npmjs.com/package/packi) |
+|  **Email** | [b.galaxy.dev@gmail.com](mailto:b.galaxy.dev@gmail.com) |
+|  **GitHub** | [github.com/ThorLex](https://github.com/ThorLex) |
+|  **Issues** | [github.com/ThorLex/packInstaller/issues](https://github.com/ThorLex/packInstaller/issues) |
+|  **npm** | [npmjs.com/package/packi](https://www.npmjs.com/package/packi) |
 
 ---
 
-## 📄 License
+##  License
 
 MIT © [Bekono Beyas Ambroise (ThorLex)](https://github.com/ThorLex)
 
