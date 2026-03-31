@@ -36,7 +36,7 @@ theme:
   features:
     - navigation.tabs
     - navigation.sections
-    - navigation.top
+    - navigation.left
     - search.suggest
     - search.highlight
     - content.code.copy
