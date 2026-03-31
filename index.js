@@ -632,8 +632,169 @@ async function installPackage(packageName, logger, packageDB) {
   });
 }
 
+// Lire les dépendances depuis package.json
+function readPackageJsonDeps(packageJsonPath) {
+  const packages = [];
+  try {
+    if (fs.existsSync(packageJsonPath)) {
+      const content = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+      if (content.dependencies) {
+        for (const name of Object.keys(content.dependencies)) {
+          packages.push(name);
+        }
+      }
+      if (content.devDependencies) {
+        for (const name of Object.keys(content.devDependencies)) {
+          packages.push(name);
+        }
+      }
+    }
+  } catch (error) {
+    // Ignore parse errors
+  }
+  return packages;
+}
+
+// Obtenir les packages installés via npm list (comme pip freeze)
+function getInstalledPackages() {
+  return new Promise((resolve) => {
+    exec("npm list --depth=0 --json", (error, stdout) => {
+      const packages = [];
+      try {
+        const data = JSON.parse(stdout);
+        if (data.dependencies) {
+          for (const [name, info] of Object.entries(data.dependencies)) {
+            const version = info.version || "";
+            packages.push({ name, version });
+          }
+        }
+      } catch (e) {
+        // Ignore parse errors
+      }
+      resolve(packages);
+    });
+  });
+}
+
+// Commande freeze : générer ou mettre à jour requirements.txt
+async function freeze() {
+  const logger = new InstallationLogger();
+  const requirementsPath = path.join(process.cwd(), "requirements.txt");
+  const packageJsonPath = path.join(process.cwd(), "package.json");
+
+  logger.logStep("Analyse des packages installés (freeze)");
+
+  const installed = await getInstalledPackages();
+
+  // Lire aussi le package.json pour compléter la liste
+  const fromPackageJson = readPackageJsonDeps(packageJsonPath);
+
+  // Fusionner : prendre les packages installés, ajouter ceux du package.json manquants
+  const packageMap = new Map();
+  for (const pkg of installed) {
+    packageMap.set(pkg.name, pkg.version);
+  }
+  for (const name of fromPackageJson) {
+    if (!packageMap.has(name)) {
+      packageMap.set(name, "");
+    }
+  }
+
+  if (packageMap.size === 0) {
+    logger.logWarning("Aucun package trouvé dans le projet");
+    return;
+  }
+
+  // Générer le contenu du requirements.txt
+  const sortedEntries = [...packageMap.entries()].sort((a, b) =>
+    a[0].localeCompare(b[0])
+  );
+
+  const lines = [];
+  lines.push("# Généré automatiquement par packi freeze");
+  lines.push(`# Date: ${new Date().toISOString()}`);
+  for (const [name, version] of sortedEntries) {
+    if (version) {
+      lines.push(`${name}@${version}`);
+    } else {
+      lines.push(name);
+    }
+  }
+
+  const content = lines.join("\n") + "\n";
+
+  if (fs.existsSync(requirementsPath)) {
+    logger.logInfo("Mise à jour du fichier requirements.txt");
+  } else {
+    logger.logInfo("Création du fichier requirements.txt");
+  }
+
+  fs.writeFileSync(requirementsPath, content, "utf8");
+  logger.logSuccess(
+    `requirements.txt généré avec ${packageMap.size} package(s)`
+  );
+
+  console.log("\nContenu de requirements.txt :");
+  console.log("─".repeat(40));
+  for (const [name, version] of sortedEntries) {
+    if (version) {
+      console.log(`  ${name}@${version}`);
+    } else {
+      console.log(`  ${name}`);
+    }
+  }
+  console.log("─".repeat(40));
+}
+
+// Auto-générer requirements.txt depuis package.json
+function autoGenerateRequirements(requirementsPath, packageJsonPath, logger) {
+  if (!fs.existsSync(packageJsonPath)) {
+    logger.logError("Le fichier requirements.txt n'existe pas !");
+    logger.logInfo(
+      "Créez un fichier requirements.txt avec vos packages (un par ligne)"
+    );
+    logger.logInfo(
+      "Ou lancez 'packi freeze' pour le générer automatiquement depuis package.json"
+    );
+    return false;
+  }
+
+  logger.logInfo(
+    "requirements.txt introuvable — génération automatique depuis package.json"
+  );
+
+  const deps = readPackageJsonDeps(packageJsonPath);
+  if (deps.length === 0) {
+    logger.logWarning(
+      "Aucune dépendance trouvée dans package.json pour générer requirements.txt"
+    );
+    return false;
+  }
+
+  const lines = [];
+  lines.push("# Généré automatiquement depuis package.json par packi");
+  lines.push(`# Date: ${new Date().toISOString()}`);
+  for (const name of deps.sort()) {
+    lines.push(name);
+  }
+
+  fs.writeFileSync(requirementsPath, lines.join("\n") + "\n", "utf8");
+  logger.logSuccess(
+    `requirements.txt créé avec ${deps.length} package(s) depuis package.json`
+  );
+  return true;
+}
+
 // Fonction principale
 async function main() {
+  const args = process.argv.slice(2);
+
+  // Commande freeze
+  if (args[0] === "freeze") {
+    await freeze();
+    return;
+  }
+
   const logger = new InstallationLogger();
   const packageDB = new PackageDatabase();
 
@@ -641,47 +802,26 @@ async function main() {
   await packageDB.loadFromFile();
 
   const requirementsPath = path.join(process.cwd(), "requirements.txt");
+  const packageJsonPath = path.join(process.cwd(), "package.json");
+
   if (!fs.existsSync(requirementsPath)) {
-    logger.logError("Le fichier requirements.txt n'existe pas !");
-    logger.logInfo(
-      "Pour créer le fichier requirements.txt, vous pouvez utiliser une des méthodes suivantes :"
+    const generated = autoGenerateRequirements(
+      requirementsPath,
+      packageJsonPath,
+      logger
     );
-    logger.logInfo(
-      "verifier qu'il s'agit de requirement's' et pas requirement "
-    );
-    logger.logInfo("1. Manuellement :");
-    console.log("   touch requirements.txt");
-    console.log("   # ou");
-    console.log("   echo '' > requirements.txt");
-
-    logger.logInfo("2. Depuis package.json :");
-    console.log(
-      "   npm list --depth=0 | grep -v 'npm@' | sed '1d' | awk -F' ' '{print $2}' | sed 's/@.*$//' > requirements.txt"
-    );
-
-    logger.logInfo("3. Depuis les dépendances existantes :");
-    console.log(
-      "   npm list --parseable --depth=0 | sed '1d' | sed 's/.*node_modules\\/\\(.*\\)/\\1/' | sed 's/@.*$//' > requirements.txt"
-    );
-
-    logger.logInfo(
-      "4. Si vous avez un autre nom de fichier, vous pouvez le renommer :"
-    );
-    console.log("   mv votre_fichier.txt requirements.txt");
-
-    logger.logWarning(
-      "Après avoir créé le fichier, ajoutez vos packages (un par ligne)"
-    );
-    console.log("Exemple de contenu requirements.txt :");
-    console.log("express\nlodash\nmoment\naxios");
-
-    return;
+    if (!generated) {
+      return;
+    }
   }
 
   const content = fs.readFileSync(requirementsPath, "utf8");
   const packages = content
     .split("\n")
     .map((line) => line.trim())
+    // Supporter le format name@version en extrayant juste le nom
+    // Le pattern gère les scoped packages (@scope/name@version)
+    .map((line) => line.replace(/@[~^>=<]*\d[^\s]*$/, ""))
     .filter((line) => line && !line.startsWith("#"));
 
   if (packages.length === 0) {

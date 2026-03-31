@@ -89,6 +89,8 @@ npm install packi
 
 ### 1. Create your `requirements.txt`
 
+You can create the file manually:
+
 ```
 express
 lodash
@@ -97,7 +99,19 @@ chalk
 dotenv
 ```
 
-> One package name per line. Lines starting with `#` are treated as comments.
+> One package name per line. Lines starting with `#` are treated as comments. The format `package@version` is also supported.
+
+Or use **`packi freeze`** to generate it automatically from your project:
+
+```bash
+packi freeze
+# or
+npx packi freeze
+```
+
+This scans your `package.json` and installed `node_modules` to produce a `requirements.txt` — similar to Python's `pip freeze`.
+
+> **Note:** If `requirements.txt` doesn't exist when you run `packi`, it will be auto-generated from `package.json` if available.
 
 ### 2. Run packi
 
