@@ -1,0 +1,19 @@
+# Dépendances
+node_modules
+
+# Build / dist
+dist
+build
+.next
+out
+docs
+
+# Fichiers générés automatiquement
+coverage
+*.min.js
+*.min.css
+
+# Fichiers spécifiques
+src/generated/
+public/assets/
+
