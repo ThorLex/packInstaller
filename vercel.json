@@ -2,5 +2,16 @@
   "buildCommand": "uv pip install --system mkdocs mkdocs-material && mkdocs build",
   "outputDirectory": "site",
   "installCommand": "uv pip install --system mkdocs mkdocs-material",
-  "framework": null
+  "framework": null,
+  "rewrites": [{ "source": "/(.*)", "destination": "/$1" }],
+  "headers": [
+    {
+      "source": "/css/(.*)",
+      "headers": [{ "key": "Content-Type", "value": "text/css" }]
+    },
+    {
+      "source": "/js/(.*)",
+      "headers": [{ "key": "Content-Type", "value": "application/javascript" }]
+    }
+  ]
 }

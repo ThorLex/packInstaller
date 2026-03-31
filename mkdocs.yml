@@ -2,7 +2,6 @@
 #  INFORMATIONS DU SITE
 # ─────────────────────────────────────────
 site_name: packi (Package Installer)
-site_url: https://thorlex.github.io/packInstaller/
 site_description: Smart CLI package installer pour Node.js - Installez toutes vos dependances npm en une seule commande depuis un fichier requirements.txt
 site_author: Bekono Beyas Ambroise (ThorLex)
 copyright: Copyright &copy; 2024 Bekono Beyas Ambroise (ThorLex)
