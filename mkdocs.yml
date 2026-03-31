@@ -2,9 +2,10 @@
 #  INFORMATIONS DU SITE
 # ─────────────────────────────────────────
 site_name: packi (Package Installer)
-site_description: Smart CLI package installer pour Node.js - Installez toutes vos dependances npm en une seule commande depuis un fichier requirements.txt
+site_description: "Smart CLI package installer pour Node.js - Installez toutes vos dependances npm en une seule commande"
 site_author: Bekono Beyas Ambroise (ThorLex)
-copyright: Copyright &copy; 2024 Bekono Beyas Ambroise (ThorLex)
+copyright: "Copyright 2024 Bekono Beyas Ambroise (ThorLex)"
+site_url: https://pack-installer.ambbeyas.com/
 
 # ─────────────────────────────────────────
 #  DEPOT GIT
@@ -14,28 +15,31 @@ repo_name: ThorLex/packInstaller
 edit_uri: edit/main/docs/
 
 # ─────────────────────────────────────────
-#  NAVIGATION
-# ─────────────────────────────────────────
-
-# ─────────────────────────────────────────
 #  THEME
 # ─────────────────────────────────────────
 theme:
-  name: readthedocs
-
-  static_templates:
-    - 404.html
-  include_search_page: true
-  search_index_only: false
-  highlightjs: true
-  hljs_languages:
-    - javascript
-    - bash
-    - json
-    - yaml
-  titles_only: false
-  sticky_navigation: true
-  locale: fr
+  name: material
+  language: fr
+  palette:
+    - scheme: default
+      primary: deep purple
+      accent: green
+      toggle:
+        icon: material/brightness-7
+        name: Mode sombre
+    - scheme: slate
+      primary: deep purple
+      accent: green
+      toggle:
+        icon: material/brightness-4
+        name: Mode clair
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
 
 # ─────────────────────────────────────────
 #  DOSSIERS
@@ -67,7 +71,7 @@ markdown_extensions:
   - toc:
       permalink: true
       permalink_title: Lien permanent vers cette section
-      toc_depth: 3
+      toc_depth: 2
       title: Sur cette page
       separator: "-"
 
@@ -80,7 +84,7 @@ plugins:
       separator: '[\s\-\.]+'
 
 # ─────────────────────────────────────────
-#  EXTRA (variables globales)
+#  EXTRA
 # ─────────────────────────────────────────
 extra:
   social:
@@ -94,4 +98,3 @@ extra:
       link: mailto:b.galaxy.dev@gmail.com
       name: Contacter ThorLex
   generator: true
-  homepage: https://thorlex.github.io/packInstaller/
